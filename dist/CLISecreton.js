@@ -15,7 +15,7 @@ const envName = args[0] || process.env.ENV || 'dev';
             consul: process.env.FETCH_ENV === 'consul'
                 ? {
                     addr: process.env.CONSUL_ADDR || 'http://localhost:8500',
-                    path: process.env.CONSUL_PATH || 'mobile/project-dev',
+                    path: process.env.CONSUL_PATH || 'mobile/project-example',
                     token: process.env.CONSUL_TOKEN,
                 }
                 : undefined,

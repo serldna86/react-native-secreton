@@ -12,6 +12,11 @@ export interface ConsulConfig {
   token?: string;
 }
 
+export type ConsulKV = {
+  Key: string;
+  Value: string | null;
+};
+
 export interface VaultConfig {
   addr: string;
   path: string;
@@ -27,7 +32,7 @@ export interface GenerateEnvOptions {
 }
 
 export function encrypt(value: string, key: string) {
-  const cmd = `printf "%s" "${value}" | openssl enc -aes-256-gcm -a -A -pass pass:${key}`;
+  const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pass pass:${key}`;
   return execSync(cmd).toString().trim();
 }
 
@@ -42,11 +47,13 @@ async function fetchConsul({
   const res = await fetch(`${addr}/v1/kv/${path}?recurse=true`, { headers });
   if (!res.ok) throw new Error('Consul fetch failed');
 
-  const data = await res.json();
-  return data.map((item: any) => ({
-    key: item.Key.replace(`${path}/`, ''),
-    value: Buffer.from(item.Value, 'base64').toString('utf8'),
-  }));
+  const data: ConsulKV[] = await res.json();
+  return data
+    .filter((item: any) => typeof item.Value === 'string')
+    .map((item: any) => ({
+      key: item.Key.replace(`${path}/`, ''),
+      value: Buffer.from(item.Value, 'base64').toString('utf8'),
+    }));
 }
 
 async function fetchVault({

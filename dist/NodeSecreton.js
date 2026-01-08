@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 export function encrypt(value, key) {
-    const cmd = `printf "%s" "${value}" | openssl enc -aes-256-gcm -a -A -pass pass:${key}`;
+    const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pass pass:${key}`;
     return execSync(cmd).toString().trim();
 }
 async function fetchConsul({ addr, path, token, }) {
@@ -12,7 +12,9 @@ async function fetchConsul({ addr, path, token, }) {
     if (!res.ok)
         throw new Error('Consul fetch failed');
     const data = await res.json();
-    return data.map((item) => ({
+    return data
+        .filter((item) => typeof item.Value === 'string')
+        .map((item) => ({
         key: item.Key.replace(`${path}/`, ''),
         value: Buffer.from(item.Value, 'base64').toString('utf8'),
     }));
