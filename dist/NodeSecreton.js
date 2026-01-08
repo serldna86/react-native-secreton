@@ -4,7 +4,7 @@ export function encrypt(value, key) {
     const cmd = `printf "%s" "${value}" | openssl enc -aes-256-gcm -a -A -pass pass:${key}`;
     return execSync(cmd).toString().trim();
 }
-async function fetchConsul({ addr, path, token }) {
+async function fetchConsul({ addr, path, token, }) {
     const headers = {};
     if (token)
         headers['X-Consul-Token'] = token;
@@ -17,7 +17,7 @@ async function fetchConsul({ addr, path, token }) {
         value: Buffer.from(item.Value, 'base64').toString('utf8'),
     }));
 }
-async function fetchVault({ addr, path, token }) {
+async function fetchVault({ addr, path, token, }) {
     const res = await fetch(`${addr}/v1/${path}`, {
         headers: { 'X-Vault-Token': token },
     });
