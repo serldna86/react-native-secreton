@@ -1,7 +1,12 @@
 {
   "name": "react-native-secreton",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Config secret variables for React Native apps",
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
   "exports": {
@@ -15,6 +20,7 @@
   "files": [
     "src",
     "lib",
+    "dist",
     "android",
     "ios",
     "cpp",
@@ -32,19 +38,18 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-secreton-example",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib dist",
+    "build:cli": "tsc -p tsconfig.cli.json",
+    "prepare": "bob build && npm run build:cli",
+    "nitrogen": "nitrogen",
     "typecheck": "tsc",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
     "test": "jest",
     "release": "release-it --only-version"
   },
-  "keywords": [
-    "react-native",
-    "ios",
-    "android"
-  ],
+  "bin": {
+    "rn-secreton-cli": "dist/CLISecreton.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/serldna86/react-native-secreton.git"
@@ -67,6 +72,7 @@
     "@react-native/eslint-config": "0.83.0",
     "@release-it/conventional-changelog": "^10.0.1",
     "@types/jest": "^29.5.14",
+    "@types/node-fetch": "^2.6.13",
     "@types/react": "^19.2.0",
     "commitlint": "^19.8.1",
     "del-cli": "^6.0.0",

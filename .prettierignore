@@ -1,2 +1,19 @@
-dist/
-lib/
+# dependencies
+node_modules
+
+# build output
+lib
+dist
+
+# react-native
+android
+ios
+
+# example app
+example/android/build
+example/ios/build
+
+# generated / misc
+*.log
+*.lock
+*.d.ts

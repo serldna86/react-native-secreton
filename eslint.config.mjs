@@ -11,12 +11,15 @@ const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
 });
 
 export default defineConfig([
+  ...fixupConfigRules(
+    compat.config({
+      extends: ['@react-native', 'prettier'],
+    })
+  ),
   {
-    extends: fixupConfigRules(compat.extends('@react-native', 'prettier')),
     plugins: { prettier },
     rules: {
       'react/react-in-jsx-scope': 'off',
@@ -24,6 +27,6 @@ export default defineConfig([
     },
   },
   {
-    ignores: ['node_modules/', 'lib/'],
+    ignores: ['node_modules/', 'lib/', 'dist/'],
   },
 ]);
