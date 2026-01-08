@@ -22,7 +22,7 @@ const envName = args[0] || process.env.ENV || 'dev';
             vault: process.env.FETCH_ENV === 'vault'
                 ? {
                     addr: process.env.VAULT_ADDR || 'http://localhost:8200',
-                    path: process.env.VAULT_PATH || 'secret/data/mobile/project-dev',
+                    path: process.env.VAULT_PATH || 'secret/data/mobile/project-example',
                     token: process.env.VAULT_TOKEN || '',
                 }
                 : undefined,

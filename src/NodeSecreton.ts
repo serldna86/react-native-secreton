@@ -36,6 +36,22 @@ export function encrypt(value: string, key: string) {
   return execSync(cmd).toString().trim();
 }
 
+export function readExistingEnv(envFile: string): Set<string> {
+  if (!fs.existsSync(envFile)) return new Set();
+
+  const content = fs.readFileSync(envFile, 'utf8');
+
+  return new Set(
+    content
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line): line is string => Boolean(line))
+      .filter((line) => !line.startsWith('#'))
+      .map((line) => line.split('=')[0])
+      .filter((key): key is string => typeof key === 'string' && key.length > 0)
+  );
+}
+
 async function fetchConsul({
   addr,
   path,
@@ -78,6 +94,8 @@ export async function generateEnv(options: GenerateEnvOptions) {
   const envFile = `.env.${options.envName}`;
   const { secretKey, fetchEnv = 'consul' } = options;
 
+  const existingKeys = readExistingEnv(envFile);
+
   let entries: EnvEntry[] = [];
 
   if (fetchEnv === 'vault' && options.vault) {
@@ -88,9 +106,16 @@ export async function generateEnv(options: GenerateEnvOptions) {
     throw new Error('No config source provided');
   }
 
-  const lines = entries.map(
-    ({ key, value }) => `${key}=enc:${encrypt(value, secretKey)}`
-  );
+  const newLines = entries
+    .filter(({ key }) => !existingKeys.has(key))
+    .map(({ key, value }) => `${key}=enc:${encrypt(value, secretKey)}`);
 
-  fs.writeFileSync(envFile, lines.join('\n'));
+  if (newLines.length === 0) {
+    console.log('ℹ️ No new env keys to add');
+    return;
+  }
+
+  fs.appendFileSync(envFile, (fs.existsSync(envFile) ? '\n' : '') + newLines.join('\n'));
+
+  console.log(`✅ Added ${newLines.length} new env keys`);
 }
