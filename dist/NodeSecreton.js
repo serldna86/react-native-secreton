@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 export function encrypt(value, key) {
-  const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2 -iter 100000 -pass pass:${key}`;
-  return execSync(cmd).toString().trim();
+    const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2 -iter 100000 -pass pass:${key}`;
+    return execSync(cmd).toString().trim();
 }
 export function readExistingEnv(envFile) {
     if (!fs.existsSync(envFile))
@@ -44,10 +44,7 @@ async function fetchVault({ addr, path, token, }) {
     }));
 }
 export async function generateEnv(options) {
-    let envFile = '.env';
-    if (options.envName) {
-        envFile += '.' + options.envName;
-    }
+    const envFile = options.envFileName ?? '.env';
     const { secretKey, fetchEnv = 'consul' } = options;
     const existingKeys = readExistingEnv(envFile);
     let entries = [];
@@ -68,5 +65,5 @@ export async function generateEnv(options) {
         return;
     }
     fs.appendFileSync(envFile, (fs.existsSync(envFile) ? '\n' : '') + newLines.join('\n'));
-    console.log(`✅ Added ${newLines.length} new env keys`);
+    console.log(`✅ [Node] Secreton updated safely → ${envFile}`);
 }

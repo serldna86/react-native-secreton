@@ -24,7 +24,7 @@ export interface VaultConfig {
 }
 
 export interface GenerateEnvOptions {
-  envName: string | undefined;
+  envFileName: string | undefined;
   secretKey: string;
   consul?: ConsulConfig;
   vault?: VaultConfig;
@@ -91,10 +91,8 @@ async function fetchVault({
 }
 
 export async function generateEnv(options: GenerateEnvOptions) {
-  let envFile = '.env';
-  if (options.envName) {
-    envFile += '.' + options.envName;
-  }
+  const envFile = options.envFileName ?? '.env';
+  
   const { secretKey, fetchEnv = 'consul' } = options;
 
   const existingKeys = readExistingEnv(envFile);
@@ -114,11 +112,11 @@ export async function generateEnv(options: GenerateEnvOptions) {
     .map(({ key, value }) => `${key}=enc:${encrypt(value, secretKey)}`);
 
   if (newLines.length === 0) {
-    console.log('ℹ️ No new env keys to add');
+    console.log('ℹ️ [Node] Secreton no new env keys to add');
     return;
   }
 
   fs.appendFileSync(envFile, (fs.existsSync(envFile) ? '\n' : '') + newLines.join('\n'));
 
-  console.log(`✅ Added ${newLines.length} new env keys`);
+  console.log(`✅ [Node] Secreton updated safely → ${envFile}`);
 }
