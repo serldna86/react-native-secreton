@@ -2,7 +2,7 @@
 import { generateEnv } from './NodeSecreton.js';
 
 const args = process.argv.slice(2);
-const envName: string = args[0] || process.env.ENV || 'dev';
+const envName: string | undefined = args[0] || process.env.ENV;
 
 (async () => {
   try {
@@ -11,26 +11,26 @@ const envName: string = args[0] || process.env.ENV || 'dev';
       throw new Error('ENV_SECRET_KEY is required');
     }
 
+    const fetchEnv: any = process.env.FETCH_ENV || 'consul';
+
     await generateEnv({
       envName,
       secretKey,
-      fetchEnv: (process.env.FETCH_ENV as 'consul' | 'vault') || 'consul',
-      consul:
-        process.env.FETCH_ENV === 'consul'
-          ? {
-              addr: process.env.CONSUL_ADDR || 'http://localhost:8500',
-              path: process.env.CONSUL_PATH || 'mobile/project-example',
-              token: process.env.CONSUL_TOKEN,
-            }
-          : undefined,
-      vault:
-        process.env.FETCH_ENV === 'vault'
-          ? {
-              addr: process.env.VAULT_ADDR || 'http://localhost:8200',
-              path: process.env.VAULT_PATH || 'secret/data/mobile/project-example',
-              token: process.env.VAULT_TOKEN || '',
-            }
-          : undefined,
+      fetchEnv,
+      consul: fetchEnv === 'consul'
+        ? {
+            addr: process.env.CONSUL_ADDR || 'http://localhost:8500',
+            path: process.env.CONSUL_PATH || 'mobile/project-example',
+            token: process.env.CONSUL_TOKEN,
+          }
+        : undefined,
+      vault: fetchEnv === 'vault'
+        ? {
+            addr: process.env.VAULT_ADDR || 'http://localhost:8200',
+            path: process.env.VAULT_PATH || 'secret/data/mobile/project-example',
+            token: process.env.VAULT_TOKEN || '',
+          }
+        : undefined,
     });
 
     console.log(`✅ Secreton updated safely → .env.${envName}`);

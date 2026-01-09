@@ -24,7 +24,7 @@ export interface VaultConfig {
 }
 
 export interface GenerateEnvOptions {
-  envName: string;
+  envName: string | undefined;
   secretKey: string;
   consul?: ConsulConfig;
   vault?: VaultConfig;
@@ -32,7 +32,7 @@ export interface GenerateEnvOptions {
 }
 
 export function encrypt(value: string, key: string) {
-  const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pass pass:${key}`;
+  const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2 -iter 100000 -pass pass:${key}`;
   return execSync(cmd).toString().trim();
 }
 
@@ -91,7 +91,10 @@ async function fetchVault({
 }
 
 export async function generateEnv(options: GenerateEnvOptions) {
-  const envFile = `.env.${options.envName}`;
+  let envFile = '.env';
+  if (options.envName) {
+    envFile += '.' + options.envName;
+  }
   const { secretKey, fetchEnv = 'consul' } = options;
 
   const existingKeys = readExistingEnv(envFile);

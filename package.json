@@ -37,6 +37,7 @@
     "!**/__mocks__",
     "!**/.*"
   ],
+  "type": "module",
   "scripts": {
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib dist",
     "build:cli": "tsc -p tsconfig.cli.json",

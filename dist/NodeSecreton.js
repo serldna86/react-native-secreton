@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 export function encrypt(value, key) {
-    const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pass pass:${key}`;
-    return execSync(cmd).toString().trim();
+  const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2 -iter 100000 -pass pass:${key}`;
+  return execSync(cmd).toString().trim();
 }
 export function readExistingEnv(envFile) {
     if (!fs.existsSync(envFile))
@@ -44,7 +44,10 @@ async function fetchVault({ addr, path, token, }) {
     }));
 }
 export async function generateEnv(options) {
-    const envFile = `.env.${options.envName}`;
+    let envFile = '.env';
+    if (options.envName) {
+        envFile += '.' + options.envName;
+    }
     const { secretKey, fetchEnv = 'consul' } = options;
     const existingKeys = readExistingEnv(envFile);
     let entries = [];
