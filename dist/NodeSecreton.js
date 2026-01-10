@@ -1,3 +1,4 @@
+import path from "node:path";
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 export function encrypt(value, key) {
@@ -45,6 +46,7 @@ async function fetchVault({ addr, path, token, }) {
 }
 export async function generateEnv(options) {
     const { envFile, secretKey, fetchEnv = 'consul', } = options;
+    const fileName = path.basename(envFile);
     const existingKeys = readExistingEnv(envFile);
     let entries = [];
     if (fetchEnv === 'vault' && options.vault) {
@@ -64,5 +66,5 @@ export async function generateEnv(options) {
         return;
     }
     fs.appendFileSync(envFile, (fs.existsSync(envFile) ? '\n' : '') + newLines.join('\n'));
-    console.log(`✅ [Node] Secreton updated safely → ${envFile}`);
+    console.log(`✅ [Node] Secreton updated safely → ${fileName}`);
 }

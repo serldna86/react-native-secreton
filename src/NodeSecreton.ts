@@ -1,3 +1,4 @@
+import path from "node:path";
 import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 
@@ -97,6 +98,7 @@ export async function generateEnv(options: GenerateEnvOptions) {
     fetchEnv = 'consul',
   } = options;
 
+  const fileName = path.basename(envFile);
   const existingKeys = readExistingEnv(envFile);
 
   let entries: EnvEntry[] = [];
@@ -120,5 +122,5 @@ export async function generateEnv(options: GenerateEnvOptions) {
 
   fs.appendFileSync(envFile, (fs.existsSync(envFile) ? '\n' : '') + newLines.join('\n'));
 
-  console.log(`✅ [Node] Secreton updated safely → ${envFile}`);
+  console.log(`✅ [Node] Secreton updated safely → ${fileName}`);
 }
