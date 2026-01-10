@@ -1,7 +1,9 @@
 #!/usr/bin/env node
+import path from "path";
 import { generateEnv } from './NodeSecreton.js';
 const args = process.argv.slice(2);
-const envFileName = args[0] || process.env.ENV_FILE;
+const envFile = args[0] || process.env.ENV_FILE;
+const fileName = path.basename(envFile);
 (async () => {
     try {
         const secretKey = process.env.ENV_SECRET_KEY;
@@ -10,7 +12,7 @@ const envFileName = args[0] || process.env.ENV_FILE;
         }
         const fetchEnv = process.env.FETCH_ENV || 'consul';
         await generateEnv({
-            envFileName,
+            envFile,
             secretKey,
             fetchEnv,
             consul: fetchEnv === 'consul'
@@ -28,11 +30,11 @@ const envFileName = args[0] || process.env.ENV_FILE;
                 }
                 : undefined,
         });
-        console.log(`✅ [CLI] Secreton updated safely → ${envFileName}`);
+        console.log(`✅ [CLI] Secreton updated safely → ${fileName}`);
     }
     catch (err) {
         const message = err instanceof Error ? err.message : JSON.stringify(err, null, 2);
-        console.error(`❌ Secreton failed: ${message}`);
+        console.error(`❌ [CLI] Secreton failed: ${message}`);
         process.exit(1);
     }
 })();

@@ -24,7 +24,7 @@ export interface VaultConfig {
 }
 
 export interface GenerateEnvOptions {
-  envFileName: string | undefined;
+  envFile: string;
   secretKey: string;
   consul?: ConsulConfig;
   vault?: VaultConfig;
@@ -91,9 +91,11 @@ async function fetchVault({
 }
 
 export async function generateEnv(options: GenerateEnvOptions) {
-  const envFile = options.envFileName ?? '.env';
-  
-  const { secretKey, fetchEnv = 'consul' } = options;
+  const {
+    envFile,
+    secretKey,
+    fetchEnv = 'consul',
+  } = options;
 
   const existingKeys = readExistingEnv(envFile);
 

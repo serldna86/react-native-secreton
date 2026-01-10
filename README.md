@@ -17,6 +17,10 @@ openssl rand -hex 32
 ### Android
 Config **android/app/build.gradle**
 ```groovy
+...
+apply from: new File(rootProject.projectDir.parentFile.parentFile, "android/secreton.gradle")
+loadEnvFromSecretonCliSync(project)
+...
 react {
     ...
     nodeExecutableAndArgs = [
@@ -24,9 +28,13 @@ react {
     ]
     ...
 }
-...
-apply from: new File(rootProject.projectDir.parentFile.parentFile, "android/secreton.gradle")
-secretonGenerateEnv(project)
+android {
+    defaultConfig {
+        manifestPlaceholders = [
+            geoApiKey           : project.ext.env?.get('GEO_APK_API_KEY')
+        ]
+    }
+}
 ```
 
 ### iOS / macOS
