@@ -88,3 +88,4 @@ nitrogen/
 package-lock.json
 yarn.lock
 .env
+Podfile.lock

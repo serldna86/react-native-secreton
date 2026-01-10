@@ -38,12 +38,7 @@ android {
 ```
 
 ### iOS / macOS
-Xcode → Target → Build Phases → + → New Run Script Phase
+- Manual Link
 ```
-bash "${SRCROOT}/secreton.sh"
-```
-
-ios/Podfile
-```
-ENV['ENVFILE'] = '../.env.decoded'
+pod 'react-native-secreton', :path => '../node_modules/react-native-secreton'
 ```
