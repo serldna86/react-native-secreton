@@ -1,6 +1,6 @@
 {
   "name": "react-native-secreton",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Config secret variables for React Native apps",
   "keywords": [
     "react-native",
@@ -26,6 +26,7 @@
     "android",
     "ios",
     "cpp",
+    "scripts",
     "*.podspec",
     "react-native.config.js",
     "!ios/build",
@@ -42,8 +43,8 @@
   "type": "module",
   "scripts": {
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib dist",
-    "build:cli": "tsc -p tsconfig.cli.json",
-    "prepare": "bob build && npm run build:cli",
+    "build": "tsc -p tsconfig.cli.json",
+    "prepare": "bob build && npm run build",
     "nitrogen": "nitrogen",
     "typecheck": "tsc",
     "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
