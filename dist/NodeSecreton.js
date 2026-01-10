@@ -5,6 +5,10 @@ export function encrypt(value, key) {
     const cmd = `printf "%s" "${value}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2 -iter 100000 -pass pass:${key}`;
     return execSync(cmd).toString().trim();
 }
+export function decrypt(encrypted, key) {
+    const cmd = `printf "%s" "${encrypted}" | openssl enc -aes-256-cbc -a -A -d -salt -pbkdf2 -iter 100000 -pass pass:${key}`;
+    return execSync(cmd).toString().trim();
+}
 export function readExistingEnv(envFile) {
     if (!fs.existsSync(envFile))
         return new Set();
@@ -60,7 +64,7 @@ export async function generateEnv(options) {
     }
     const newLines = entries
         .filter(({ key }) => !existingKeys.has(key))
-        .map(({ key, value }) => `${key}=enc:${encrypt(value, secretKey)}`);
+        .map(({ key, value }) => `${key}=secreton:${encrypt(value, secretKey)}`);
     if (newLines.length === 0) {
         console.log('ℹ️ [Node] Secreton no new env keys to add');
         return;
