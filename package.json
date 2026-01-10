@@ -5,7 +5,9 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "secrets",
+    "env"
   ],
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
