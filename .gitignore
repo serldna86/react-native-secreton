@@ -85,6 +85,9 @@ android/generated
 # React Native Nitro Modules
 nitrogen/
 
+# Jest
+.coverage/
+
 package-lock.json
 yarn.lock
 .env

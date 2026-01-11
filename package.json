@@ -48,7 +48,8 @@
     "nitrogen": "nitrogen",
     "typecheck": "tsc",
     "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
-    "test": "jest",
+    "test": "jest -c jest.config.cjs",
+    "test:coverage": "jest -c jest.config.cjs --coverage --coverageDirectory=.coverage",
     "release": "release-it --only-version"
   },
   "bin": {
@@ -76,6 +77,7 @@
     "@react-native/eslint-config": "0.83.0",
     "@release-it/conventional-changelog": "^10.0.1",
     "@types/jest": "^29.5.14",
+    "@types/node": "^25.0.5",
     "@types/react": "^19.2.0",
     "commitlint": "^19.8.1",
     "del-cli": "^6.0.0",
@@ -90,6 +92,7 @@
     "react-native": "0.83.0",
     "react-native-builder-bob": "^0.40.17",
     "release-it": "^19.0.4",
+    "ts-jest": "^29.4.6",
     "turbo": "^2.5.6",
     "typescript": "^5.9.2"
   },
