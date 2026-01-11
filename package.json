@@ -1,6 +1,6 @@
 {
   "name": "react-native-secreton",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Config secret variables for React Native apps",
   "keywords": [
     "react-native",
