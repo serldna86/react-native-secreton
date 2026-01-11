@@ -25,7 +25,7 @@ class SecretonPackage : BaseReactPackage() {
         false,  // canOverrideExistingModule
         false,  // needsEagerInit
         false,  // isCxxModule
-        true // isTurboModule
+        true    // isTurboModule
       )
       moduleInfos
     }

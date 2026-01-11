@@ -23,5 +23,7 @@ Pod::Spec.new do |s|
     :execution_position => :before_compile
   }
 
+  s.frameworks = 'Foundation', 'Security'
+
   install_modules_dependencies(s)
 end

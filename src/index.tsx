@@ -1,5 +1,9 @@
 import Secreton from './NativeSecreton';
 
-export function multiply(a: number, b: number): number {
-  return Secreton.multiply(a, b);
+export function encrypt(value: string, key: string): string {
+  return Secreton.encrypt(value, key);
+}
+
+export function decrypt(encrypted: string, key: string): string {
+  return Secreton.decrypt(encrypted, key);
 }

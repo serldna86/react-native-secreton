@@ -92,7 +92,7 @@ android {
         versionCode 1
         versionName "1.0"
         manifestPlaceholders = [
-            geoApiKey           : project.ext.env?.get('GEO_APK_API_KEY')
+            namespace           : project.ext.env?.get('NAMESPACE') ?: ""
         ]
     }
     signingConfigs {
