@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
   s.script_phase = {
     :name => 'Secreton Env',
-    :script => 'bash "${PODS_TARGET_SRCROOT}/../../scripts/secreton-ios.sh"',
+    :script => 'bash "${PODS_TARGET_SRCROOT}/scripts/secreton-ios.sh"',
     :execution_position => :before_compile
   }
 
