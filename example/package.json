@@ -6,8 +6,10 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "debug:android": "ENVFILE=.env.local npx react-native run-android",
-    "debug:ios": "ENVFILE=.env.local npx react-native run-ios",
+    "debug:android-consul": "ENVFILE=.env.consul npx react-native run-android",
+    "debug:android-vault": "ENVFILE=.env.vault npx react-native run-android",
+    "debug:ios-consul": "ENVFILE=.env.consul npx react-native run-ios",
+    "debug:ios-vault": "ENVFILE=.env.vault npx react-native run-ios",
     "build:android": "react-native build-android --extra-params \"--no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a\"",
     "build:ios": "react-native build-ios --mode Debug"
   },
