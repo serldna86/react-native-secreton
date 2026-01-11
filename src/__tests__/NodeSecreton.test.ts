@@ -108,7 +108,7 @@ describe('generateEnv', () => {
 
     const content = fs.readFileSync(tmpEnv, 'utf8');
 
-    expect(content).toContain('FOO=secreton:ENCRYPTED');
+    expect(content).toContain('FOO=Secreton:ENCRYPTED');
   });
 
   it('should not overwrite existing keys', async () => {
@@ -161,7 +161,7 @@ describe('generateEnv', () => {
     });
 
     const content = fs.readFileSync(tmpEnv, 'utf8');
-    expect(content).toContain('API_KEY=secreton:ENCRYPTED');
+    expect(content).toContain('API_KEY=Secreton:ENCRYPTED');
   });
 
   it('does nothing when no new env keys', async () => {
@@ -218,7 +218,7 @@ describe('generateEnv', () => {
     });
 
     const content = fs.readFileSync(tmpEnv, 'utf8');
-    expect(content.startsWith('HELLO=secreton:')).toBe(true);
+    expect(content.startsWith('HELLO=Secreton:')).toBe(true);
   });
 
   it('throws error when no config source is provided', async () => {
@@ -254,7 +254,7 @@ describe('generateEnv', () => {
     });
 
     const content = fs.readFileSync(tmpEnv, 'utf8');
-    expect(content).toContain('FOO=secreton:ENCRYPTED');
+    expect(content).toContain('FOO=Secreton:ENCRYPTED');
   });
   
   it('fetches env from vault', async () => {
@@ -281,11 +281,11 @@ describe('generateEnv', () => {
     });
 
     const content = fs.readFileSync(tmpEnv, 'utf8');
-    expect(content).toContain('HELLO=secreton:ENCRYPTED');
+    expect(content).toContain('HELLO=Secreton:ENCRYPTED');
   });
   
   it('logs when no new env keys to add', async () => {
-    fs.writeFileSync(tmpEnv, 'FOO=secreton:ENCRYPTED');
+    fs.writeFileSync(tmpEnv, 'FOO=Secreton:ENCRYPTED');
 
     (fetch as jest.Mock).mockResolvedValue({
       ok: true,
