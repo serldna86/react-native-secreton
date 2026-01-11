@@ -47,6 +47,8 @@ example/ios/Pods
 
 # Ruby
 example/vendor/
+example/.bundle/
+example/Gemfile.lock
 
 # node.js
 #
