@@ -4,6 +4,8 @@
 
 @implementation Secreton
 
+static NSString * const kPrefix = @"Secreton:";
+
 + (NSString *)moduleName
 {
   return @"Secreton";
@@ -11,14 +13,30 @@
 
 #pragma mark - TurboModule methods
 
-- (NSString *)encrypt:(NSString *)value key:(NSString *)key
+- (NSString *)encrypt:(NSString *)value
 {
-    return [self aes:kCCEncrypt value:value key:key];
+  NSString *key = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENV_SECRET_KEY"];
+  if (!key || key.length == 0) {
+    return nil;
+  }
+
+  NSString *encrypted = [self aes:kCCEncrypt value:value key:key];
+  return [kPrefix stringByAppendingString:encrypted];
 }
 
-- (NSString *)decrypt:(NSString *)value key:(NSString *)key
+- (NSString *)decrypt:(NSString *)value
 {
-    return [self aes:kCCDecrypt value:value key:key];
+  if (![value hasPrefix:kPrefix]) {
+    return value;
+  }
+  
+  NSString *key = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENV_SECRET_KEY"];
+  if (!key || key.length == 0) {
+    return nil;
+  }
+
+  NSString *raw = [value substringFromIndex:kPrefix.length];
+  return [self aes:kCCDecrypt value:raw key:key];
 }
 
 #pragma mark - AES core
@@ -27,13 +45,19 @@
             value:(NSString *)value
               key:(NSString *)key
 {
-  NSData *data = [value dataUsingEncoding:NSUTF8StringEncoding];
+  NSData *data = nil;
 
-  // FIX: key 32 byte (AES-256)
+  if (operation == kCCEncrypt) {
+    data = [value dataUsingEncoding:NSUTF8StringEncoding];
+  } else {
+    data = [[NSData alloc] initWithBase64EncodedString:value options:0];
+    if (!data) return nil;
+  }
+
+  // Key 32 byte (AES-256)
   NSMutableData *keyData = [NSMutableData dataWithLength:kCCKeySizeAES256];
   NSData *rawKey = [key dataUsingEncoding:NSUTF8StringEncoding];
-  NSUInteger copyLen = MIN(rawKey.length, kCCKeySizeAES256);
-  memcpy(keyData.mutableBytes, rawKey.bytes, copyLen);
+  memcpy(keyData.mutableBytes, rawKey.bytes, MIN(rawKey.length, kCCKeySizeAES256));
 
   size_t outLength = 0;
   NSMutableData *outData = [NSMutableData dataWithLength:data.length + kCCBlockSizeAES128];
@@ -44,7 +68,7 @@
     kCCOptionPKCS7Padding,
     keyData.bytes,
     kCCKeySizeAES256,
-    NULL, // IV = zero (compat Swift)
+    NULL, // IV zero
     data.bytes,
     data.length,
     outData.mutableBytes,

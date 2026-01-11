@@ -91,9 +91,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [
-            namespace           : project.ext.env?.get('NAMESPACE') ?: ""
-        ]
+        buildConfigField "String", "SECRETON_KEY", "\"${project.ext.env.SECRETON_KEY}\""
     }
     signingConfigs {
         debug {

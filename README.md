@@ -46,7 +46,7 @@ $ react-native link react-native-secreton
 
 ### Using Consul
 ```bash
-export ENV_SECRET_KEY=my-secret
+export ENV_SECRET_KEY=secret-key-32-bytes
 export FETCH_ENV=consul
 export CONSUL_ADDR=http://consul.mycompany.com:8500
 export CONSUL_PATH=mobile/myapp
@@ -57,7 +57,7 @@ rn-secreton-cli .env
 
 ### Using Vault
 ```bash
-export ENV_SECRET_KEY=my-secret
+export ENV_SECRET_KEY=secret-key-32-bytes
 export FETCH_ENV=vault
 export VAULT_ADDR=http://vault.mycompany.com:8200
 export VAULT_PATH=secret/data/mobile/myapp

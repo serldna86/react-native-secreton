@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView, Text, NativeModules } from 'react-native';
 import * as RNSecreton from 'react-native-secreton';
 
+const { Config } = NativeModules;
+
 export default function App() {
+  const [configText, setConfigText] = useState<string | null>(null);
   const [encrypted, setEncrypted] = useState<string | null>(null);
   const [decrypted, setDecrypted] = useState<string | null>(null);
 
   useEffect(() => {
-    const secretKey = 'secret-key-32-bytes';
-    const plainText = 'Hello Secreton';
+    Config.getEnv().then((env: Record<string, any>) => {
+      setConfigText(env.SECRETON_KEY);
+    });
 
-    const enc = RNSecreton.encrypt(plainText, secretKey);
-    const dec = RNSecreton.decrypt(enc, secretKey);
-
+    const enc = RNSecreton.encrypt("Hi, Secreton...");
     setEncrypted(enc);
+
+    const dec = RNSecreton.decrypt(enc);
     setDecrypted(dec);
   }, []);
 
@@ -24,6 +28,9 @@ export default function App() {
 
       <Text style={{ marginTop: 16 }}>🔓 Decrypted:</Text>
       <Text selectable>{decrypted}</Text>
+
+      <Text style={{ marginTop: 16 }}>🔓 Config from Env:</Text>
+      <Text selectable>{configText}</Text>
     </SafeAreaView>
   );
 }

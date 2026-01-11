@@ -118,7 +118,7 @@ export async function generateEnv(options: GenerateEnvOptions) {
 
   const newLines = entries
     .filter(({ key }) => !existingKeys.has(key))
-    .map(({ key, value }) => `${key}=secreton:${encrypt(value, secretKey)}`);
+    .map(({ key, value }) => `${key}=Secreton:${encrypt(value, secretKey)}`);
 
   if (newLines.length === 0) {
     console.log('ℹ️ [Node] Secreton no new env keys to add');

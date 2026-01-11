@@ -1,9 +1,9 @@
 import Secreton from './NativeSecreton';
 
-export function encrypt(value: string, key: string): string {
-  return Secreton.encrypt(value, key);
+export function encrypt(value: string): string {
+  return Secreton.encrypt(value);
 }
 
-export function decrypt(encrypted: string, key: string): string {
-  return Secreton.decrypt(encrypted, key);
+export function decrypt(encrypted: string): string {
+  return Secreton.decrypt(encrypted);
 }
