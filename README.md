@@ -60,7 +60,7 @@ rn-secreton-cli .env
 export ENV_SECRET_KEY=secret-key-32-bytes
 export FETCH_ENV=vault
 export VAULT_ADDR=http://vault.mycompany.com:8200
-export VAULT_PATH=dlb-app/data/local
+export VAULT_PATH=myapp/data/local
 export VAULT_TOKEN=abcd1234
 
 rn-secreton-cli .env
