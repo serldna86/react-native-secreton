@@ -8,7 +8,7 @@ ENVFILE="${ENVFILE:-.env}"
 
 ENV_PATH="$WORKSPACE_ROOT/$ENVFILE"
 CLI_BIN="$WORKSPACE_ROOT/node_modules/.bin/rn-secreton-cli"
-GENERATED_FILE="$WORKSPACE_ROOT/Secreton.xcconfig"
+GENERATED_FILE="$WORKSPACE_ROOT/ios/Secreton.xcconfig"
 
 echo "📁 WORKSPACE_ROOT = $WORKSPACE_ROOT"
 echo "📄 ENVFILE = $ENV_PATH"
