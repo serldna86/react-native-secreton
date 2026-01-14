@@ -89,7 +89,7 @@ Then in Xcode build settings:
 
 2. Use on native iOS (Objective‑C/Swift)
 ```objective‑c
-let apiKey = ProcessInfo.processInfo.environment["GEO_APK_API_KEY"]
+let apiKey = ProcessInfo.processInfo.environment["API_KEY"]
 # or
-let apiKey = Bundle.main.object(forInfoDictionaryKey: "GEO_APK_API_KEY") as? String
+let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String
 ```
